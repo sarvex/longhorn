@@ -25,8 +25,8 @@ def create_sts_deployment(count):
 def create_sts_yaml(index):
     content = Path(TEMPLATE_FILE).read_text()
     content = content.replace("@NODE_NAME@", NODE_PREFIX + str(index))
-    content = content.replace("@STS_NAME@",  "sts" + str(index))
-    file = Path("out/sts" + str(index) + ".yaml")
+    content = content.replace("@STS_NAME@", f"sts{str(index)}")
+    file = Path(f"out/sts{str(index)}.yaml")
     file.parent.mkdir(parents=True, exist_ok=True)
     file.write_text(content)
 
@@ -42,13 +42,9 @@ async def watch_pods_async():
 
 
 def process_pod_event(log, event):
-    log.info("Event: %s %s %s" % (event['type'], event['object'].kind, event['object'].metadata.name))
-    if 'ADDED' in event['type']:
-        pass
-    elif 'DELETED' in event['type']:
-        pass
-    else:
-        pass
+    log.info(
+        f"Event: {event['type']} {event['object'].kind} {event['object'].metadata.name}"
+    )
 
 
 async def watch_pvc_async():
@@ -62,13 +58,9 @@ async def watch_pvc_async():
 
 
 def process_pvc_event(log, event):
-    log.info("Event: %s %s %s" % (event['type'], event['object'].kind, event['object'].metadata.name))
-    if 'ADDED' in event['type']:
-        pass
-    elif 'DELETED' in event['type']:
-        pass
-    else:
-        pass
+    log.info(
+        f"Event: {event['type']} {event['object'].kind} {event['object'].metadata.name}"
+    )
 
 
 async def watch_va_async():
@@ -82,13 +74,9 @@ async def watch_va_async():
 
 
 def process_va_event(log, event):
-    log.info("Event: %s %s %s" % (event['type'], event['object'].kind, event['object'].metadata.name))
-    if 'ADDED' in event['type']:
-        pass
-    elif 'DELETED' in event['type']:
-        pass
-    else:
-        pass
+    log.info(
+        f"Event: {event['type']} {event['object'].kind} {event['object'].metadata.name}"
+    )
 
 
 if __name__ == '__main__':
@@ -111,9 +99,9 @@ if __name__ == '__main__':
     #       volume-creation time per pod
     #       volume-attach time per pod
     #       volume-detach time per pod
-    pvc_to_va_map = dict()
-    pvc_to_pod_map = dict()
-    results = dict()
+    pvc_to_va_map = {}
+    pvc_to_pod_map = {}
+    results = {}
 
     # start async event_loop
     event_loop = asyncio.get_event_loop()
